@@ -14,7 +14,7 @@ import pymysql
 from sqlalchemy import create_engine
 
 import random
-from functions import find_category, find_actor_id, find_film_id
+from functions import find_category, find_actor_id, find_film_id, pass_
 
 #%% Load data
 
@@ -87,7 +87,7 @@ for df, df_name in zip(df_lst, df_name_lst):
 
 #%% Create connection string
 
-mysql_str_conn = f'mysql+pymysql://jgchaparro:{password}@127.0.0.1:3306/'
+mysql_str_conn = f'mysql+pymysql://jgchaparro:{pass_}@127.0.0.1:3306/'
 mysql_motor = create_engine(mysql_str_conn)
 
 
@@ -99,7 +99,7 @@ except:
     pass
 mysql_motor.execute('CREATE DATABASE sql_proyect;')
 
-str_conn = f'mysql+pymysql://jgchaparro:{password}!@127.0.0.1:3306/sql_proyect'
+str_conn = f'mysql+pymysql://jgchaparro:{pass_}!@127.0.0.1:3306/sql_proyect'
 motor = create_engine(str_conn)
 
 #%% Add tables to SQL

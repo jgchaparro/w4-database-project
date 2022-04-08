@@ -28,3 +28,6 @@ def find_film_id(title, df):
         return df[df.title == title]['film_id'].iloc[0]
     except:
         return np.nan
+
+with open('MySQL_pass.txt') as f:
+    pass_ = f.read()
