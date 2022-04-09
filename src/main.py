@@ -35,8 +35,7 @@ df_name_lst = ['actor', 'category', 'film', 'inventory', 'language', 'rental']
 actor = actor.drop(columns = ['last_update'])
 category = category.drop(columns = ['last_update'])
 film = film.drop(columns = ['description', 'release_year', # All films were released in 2006
-                            'original_language_id', 'rating', 
-                            'special_features', 'last_update']) 
+                            'rating', 'special_features', 'last_update']) 
 inventory = inventory.drop(columns = ['last_update'])
 language = language.drop(columns = ['last_update'])
 rental = rental.drop(columns = ['last_update'])
@@ -72,12 +71,22 @@ old_hdd['index' ] = [i for i in range(len(old_hdd))]
 # Create final df
 film_actor = old_hdd[['index', 'film_id', 'actor_id']]
 
+#%% Create original language df
+
+ol= {'original_language_id' : [1, 2, 3, 4, 5, 6, 7, 8],
+     'original_language_name' : ['English', 'Spanish', 'Greek', 'French', 'Russian', 
+                        'Belarusian', 'Chinese', 'Breton']}
+original_lang = pd.DataFrame(data = ol)
+
+# Create random column in `film`
+
+film['original_language_id'] = [random.choice(original_lang['original_language_id']) for _ in range(len(film))]
 
 #%% Save to clean .csv
 
 # Refresh objects
-df_lst = [actor, category, film, inventory, language, rental, film_actor]
-df_name_lst = ['actor', 'category', 'film', 'inventory', 'language', 'rental', 'film_actor']
+df_lst = [actor, category, film, inventory, language, rental, film_actor, original_lang]
+df_name_lst = ['actor', 'category', 'film', 'inventory', 'language', 'rental', 'film_actor', 'original_lang']
 
 suffix = '_cl'
 
@@ -90,7 +99,6 @@ for df, df_name in zip(df_lst, df_name_lst):
 mysql_str_conn = f'mysql+pymysql://jgchaparro:{pass_}@127.0.0.1:3306/'
 mysql_motor = create_engine(mysql_str_conn)
 
-
 #%% Reinitialize DB
 
 try:
@@ -99,7 +107,7 @@ except:
     pass
 mysql_motor.execute('CREATE DATABASE sql_proyect;')
 
-str_conn = f'mysql+pymysql://jgchaparro:{pass_}!@127.0.0.1:3306/sql_proyect'
+str_conn = f'mysql+pymysql://jgchaparro:{pass_}@127.0.0.1:3306/sql_proyect'
 motor = create_engine(str_conn)
 
 #%% Add tables to SQL
@@ -117,7 +125,8 @@ pks = {
        'category' : 'category_id',
        'inventory' : 'inventory_id',
        'rental' : 'rental_id',
-       'language' : 'language_id'
+       'language' : 'language_id',
+       'original_lang' : 'original_language_id'
        }
 
 for k, v in pks.items():
@@ -143,6 +152,11 @@ conns = [
          'CONSTRAINT' : 'fk_film_id2',
          'FOREIGN' : 'language_id',
          'REFERENCES' : 'language'},
+        
+        {'ALTER' : 'film',
+         'CONSTRAINT' : 'fk_film_id3',
+         'FOREIGN' : 'original_language_id',
+         'REFERENCES' : 'original_lang'},
 
         {'ALTER' : 'film',
          'CONSTRAINT' : 'fk_category_id',
@@ -159,15 +173,6 @@ conns = [
          'FOREIGN' : 'inventory_id',
          'REFERENCES' : 'inventory'}
         ]
-
-# =============================================================================
-# f"""ALTER TABLE {c['ALTER']} 
-#               ADD CONSTRAINT `fk_{c['FOREIGN']}`
-#               FOREIGN KEY ({c['FOREIGN']})
-#               REFERENCES {c['REFERENCES']}({c['FOREIGN']});
-#               """
-# 
-# =============================================================================
 
 for c in conns:
     try:
