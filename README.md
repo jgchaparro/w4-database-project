@@ -4,6 +4,8 @@ The goal of this project is to build our own database from several .csv files ab
 
 ## Steps taken
 
+All of the processes were executed through Python, including the queries.
+
 1. Import the .csv as Pandas dataframes.
 1. Inspect the dataframes to have a rough idea of the information availible.
 1. Sketch the relationships between tables. The `actor` and `film` tables have a many-to-many relationship and no intermediate table is provided. The `category` table is, at first glance, disconnected from the rest. Other tables have direct connections.
