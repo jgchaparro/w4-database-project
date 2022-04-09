@@ -6,7 +6,7 @@ The goal of this project is to build our own database from several .csv files ab
 
 1. Import the .csv as Pandas dataframes.
 1. Inspect the dataframes to have a rough idea of the information availible.
-1. Sketch the relationships between tables. The `actor` and `film` tables have a many-to-many relationship and no intermediate table is provided. The category column is, at first glance, disconnected from the rest. Other tables have direct connections.
+1. Sketch the relationships between tables. The `actor` and `film` tables have a many-to-many relationship and no intermediate table is provided. The `category` table is, at first glance, disconnected from the rest. Other tables have direct connections.
 1. Clean data: details provided below.
 1. Create a brand new table, `original_lang`.
 1. Save processed tables to .csv.
@@ -17,7 +17,7 @@ The goal of this project is to build our own database from several .csv files ab
 
 ## Final schema
 
-![final_schema](https://i0.wp.com/itsoftware.com.co/content/wp-content/uploads/2018/03/que-es-y-para-que-sirve-mysql-1.jpg)
+![final_schema](https://raw.githubusercontent.com/jgchaparro/w4-database-project/main/schema/final_schema.png)
 
 ## About the cleaning process
 
